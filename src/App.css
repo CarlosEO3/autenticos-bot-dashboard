@@ -334,3 +334,40 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
+
+/* Back button */
+.back-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* RESPONSIVE LAYOUT FOR MOBILE */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+  
+  .app-container.chat-active .sidebar {
+    display: none;
+  }
+  
+  .chat-window {
+    display: none;
+  }
+  
+  .app-container.chat-active .chat-window {
+    display: flex;
+    width: 100%;
+  }
+  
+  .back-btn {
+    display: flex;
+  }
+}

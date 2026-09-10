@@ -37,7 +37,7 @@ function App() {
   }
 
   return (
-    <div className="app-container">
+    <div className={`app-container ${selectedConv ? 'chat-active' : ''}`}>
       <Sidebar 
         onSelectConversation={setSelectedConv} 
         selectedId={selectedConv?.id} 
@@ -48,6 +48,7 @@ function App() {
         onResolve={() => {
           setSelectedConv(prev => ({...prev, status: 'bot_active'}))
         }}
+        onBack={() => setSelectedConv(null)}
       />
     </div>
   )

@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { CheckCircle, Send, Bot, User, UserCog } from 'lucide-react'
+import { CheckCircle, Send, Bot, User, UserCog, ArrowLeft } from 'lucide-react'
 
-export default function ChatWindow({ conversation, onResolve }) {
+export default function ChatWindow({ conversation, onResolve, onBack }) {
   const [messages, setMessages] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [sending, setSending] = useState(false)
@@ -135,6 +135,9 @@ export default function ChatWindow({ conversation, onResolve }) {
 
       {/* Cabecera del Chat */}
       <div className="chat-header">
+        <button className="back-btn" onClick={onBack}>
+          <ArrowLeft size={20} />
+        </button>
         <div className="avatar">
           {conversation.user_name ? conversation.user_name.substring(0, 2).toUpperCase() : 'U'}
         </div>
