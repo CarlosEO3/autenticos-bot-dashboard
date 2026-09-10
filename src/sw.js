@@ -10,8 +10,8 @@ self.addEventListener('push', function (event) {
       const data = event.data.json();
       const options = {
         body: data.body,
-        icon: '/favicon.svg',
-        badge: '/favicon.svg',
+        icon: '/Icono_asistente_virtual.jpg',
+        badge: '/Icono_asistente_virtual.jpg',
         vibrate: [200, 100, 200],
         data: {
           url: '/' // Abre la app al hacer click

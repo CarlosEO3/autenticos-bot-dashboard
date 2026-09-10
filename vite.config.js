@@ -23,19 +23,19 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/logo-azul.png',
+            src: '/Icono_asistente_virtual.jpg',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/jpeg'
           },
           {
-            src: '/logo-azul.png',
+            src: '/Icono_asistente_virtual.jpg',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/jpeg'
           },
           {
-            src: '/logo-azul.png',
+            src: '/Icono_asistente_virtual.jpg',
             sizes: '512x512',
-            type: 'image/png',
+            type: 'image/jpeg',
             purpose: 'any maskable'
           }
         ]
