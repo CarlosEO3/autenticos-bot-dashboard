@@ -358,7 +358,7 @@
     display: none;
   }
   
-  .chat-window {
+  .chat-window, .chat-empty {
     display: none;
   }
   
