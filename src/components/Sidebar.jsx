@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { LogOut, Bot, UserCog } from 'lucide-react'
+import { LogOut, Bot, UserCog, Bell } from 'lucide-react'
 
-export default function Sidebar({ onSelectConversation, selectedId, onLogout }) {
+export default function Sidebar({ onSelectConversation, selectedId, onLogout, session }) {
   const [conversations, setConversations] = useState([])
+  const [pushEnabled, setPushEnabled] = useState(false)
 
   useEffect(() => {
     fetchConversations()
@@ -34,6 +35,43 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout }) 
     return name.substring(0, 2).toUpperCase()
   }
 
+  const urlB64ToUint8Array = (base64String) => {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  const enablePush = async () => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      try {
+        const swRegistration = await navigator.serviceWorker.register('/sw.js');
+        const subscription = await swRegistration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlB64ToUint8Array('BJON_9rcvSwmfnYVAUH21pTQQvN1fa4Ygzm_EKcejAA69CuyVGxzSCmd-WhkNpJ86JQdzohRXiQnnedqolKmys4')
+        });
+        
+        await supabase.from('push_subscriptions').insert({
+          user_id: session?.user?.id,
+          subscription: subscription
+        });
+        setPushEnabled(true);
+        alert('¡Notificaciones activadas exitosamente!');
+      } catch (e) {
+        console.error('Error enabling push', e);
+        alert('No se pudieron activar las notificaciones. Asegúrate de dar permisos en tu navegador.');
+      }
+    } else {
+      alert('Tu navegador/dispositivo no soporta notificaciones push en este momento.');
+    }
+  }
+
   const humanCount = conversations.filter(c => c.status === 'human_intervention').length;
   const botCount = conversations.filter(c => c.status === 'bot_active').length;
 
@@ -41,9 +79,14 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout }) 
     <div className="sidebar">
       <div className="sidebar-header">
         <img src="/Logo-Blanco.png" alt="Auténticos" style={{ height: '32px' }} />
-        <button className="logout-btn" onClick={onLogout} title="Cerrar Sesión">
-          <LogOut size={20} />
-        </button>
+        <div>
+          <button className="logout-btn" onClick={enablePush} title="Activar Notificaciones" style={{marginRight: '8px', color: pushEnabled ? 'var(--success)' : 'var(--text-secondary)'}}>
+            <Bell size={20} />
+          </button>
+          <button className="logout-btn" onClick={onLogout} title="Cerrar Sesión">
+            <LogOut size={20} />
+          </button>
+        </div>
       </div>
 
       <div className="sidebar-stats">

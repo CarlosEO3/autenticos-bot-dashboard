@@ -42,6 +42,7 @@ function App() {
         onSelectConversation={setSelectedConv} 
         selectedId={selectedConv?.id} 
         onLogout={handleLogout}
+        session={session}
       />
       <ChatWindow 
         conversation={selectedConv} 
