@@ -62,6 +62,16 @@ export default function ChatWindow({ conversation, onResolve }) {
     setInputValue('') // optimistic clear
 
     try {
+      // Optimistic UI update
+      const tempId = 'temp-' + Date.now()
+      setMessages(prev => [...prev, {
+        id: tempId,
+        conversation_id: conversation.id,
+        sender_role: 'human',
+        content: textToSend,
+        created_at: new Date().toISOString()
+      }])
+
       const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000'
       const res = await fetch(`${apiUrl}/api/messages/send`, {
         method: 'POST',
@@ -79,6 +89,8 @@ export default function ChatWindow({ conversation, onResolve }) {
     } catch (err) {
       console.error(err)
       alert("Error al enviar el mensaje")
+      // Remove optimistic message on error
+      setMessages(prev => prev.filter(m => !m.id?.toString().startsWith('temp-')))
     } finally {
       setSending(false)
     }
