@@ -1,0 +1,36 @@
+:root {
+  /* RelayBot Dark Aesthetic with Auténticos Base Color & Accents */
+  --bg-color: #00101a;
+  --panel-bg: rgba(255, 255, 255, 0.03);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --card-bg: rgba(255, 255, 255, 0.02);
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  
+  /* Accents */
+  --accent: #ddbe3d; /* Auténticos Gold */
+  --accent-hover: #c9ab35;
+  --accent-dim: rgba(221, 190, 61, 0.15);
+  
+  --danger: #ef4444;
+  --success: #10b981; /* Green for bot active */
+  --success-dim: rgba(16, 185, 129, 0.15);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+* { box-sizing: border-box; }
+input, button { font-family: inherit; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
