@@ -82,7 +82,7 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout }) 
               <div className="conv-badges">
                 {isHuman ? (
                   <span className="badge badge-human">
-                    <UserCog size={12} /> Handover Solicitado
+                    <UserCog size={12} /> Requiere asesor
                   </span>
                 ) : (
                   <span className="badge badge-bot">
