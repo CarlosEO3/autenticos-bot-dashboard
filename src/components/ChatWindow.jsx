@@ -139,9 +139,6 @@ export default function ChatWindow({ conversation, onResolve, onBack }) {
           <ArrowLeft size={20} />
           <span>Volver</span>
         </button>
-        <div className="avatar">
-          {conversation.user_name ? conversation.user_name.substring(0, 2).toUpperCase() : 'U'}
-        </div>
         <div>
           <h3 style={{margin: 0}}>{conversation.user_name || 'Usuario'}</h3>
           <span style={{color: 'var(--text-secondary)', fontSize: '13px'}}>{conversation.phone_number}</span>
