@@ -34,13 +34,27 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout }) 
     return name.substring(0, 2).toUpperCase()
   }
 
+  const humanCount = conversations.filter(c => c.status === 'human_intervention').length;
+  const botCount = conversations.filter(c => c.status === 'bot_active').length;
+
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h2>Chats</h2>
+        <img src="/Logo-Blanco.png" alt="Auténticos" style={{ height: '32px' }} />
         <button className="logout-btn" onClick={onLogout} title="Cerrar Sesión">
           <LogOut size={20} />
         </button>
+      </div>
+
+      <div className="sidebar-stats">
+        <div className="stat-card stat-human">
+          <div className="stat-label"><div className="dot dot-human"></div>HUMANO</div>
+          <div className="stat-value">{humanCount}<span> urgentes</span></div>
+        </div>
+        <div className="stat-card stat-bot">
+          <div className="stat-label"><div className="dot dot-bot"></div>ACTIVOS</div>
+          <div className="stat-value">{botCount}<span> bots</span></div>
+        </div>
       </div>
       
       <div className="conv-list">

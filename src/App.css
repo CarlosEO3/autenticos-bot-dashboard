@@ -43,6 +43,68 @@
   align-items: center;
 }
 
+.sidebar-stats {
+  display: flex;
+  gap: 12px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.stat-card {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-human {
+  border-color: rgba(221, 190, 61, 0.2);
+  background: rgba(221, 190, 61, 0.05);
+}
+
+.stat-bot {
+  border-color: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.stat-human .stat-value { color: var(--accent); }
+.stat-bot .stat-value { color: var(--success); }
+
+.stat-value span {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.dot-human { background: var(--accent); }
+.dot-bot { background: var(--success); }
+
 .logout-btn {
   background: transparent;
   border: none;
