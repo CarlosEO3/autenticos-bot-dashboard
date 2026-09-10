@@ -89,7 +89,13 @@ export default function ChatWindow({ conversation, onResolve }) {
   }
 
   if (!conversation) {
-    return <div className="chat-empty">Selecciona un chat en la barra lateral para ver los mensajes.</div>
+    return (
+      <div className="chat-empty">
+        <div className="chat-empty-message">
+          Selecciona un chat en la barra lateral para ver los mensajes.
+        </div>
+      </div>
+    )
   }
 
   const isHuman = conversation.status === 'human_intervention';
