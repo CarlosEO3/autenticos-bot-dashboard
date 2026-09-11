@@ -23,19 +23,19 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/Icono_asistente_virtual.jpg',
+            src: '/Icono_asistente_virtual-2.png',
             sizes: '192x192',
-            type: 'image/jpeg'
+            type: 'image/png'
           },
           {
-            src: '/Icono_asistente_virtual.jpg',
+            src: '/Icono_asistente_virtual-2.png',
             sizes: '512x512',
-            type: 'image/jpeg'
+            type: 'image/png'
           },
           {
-            src: '/Icono_asistente_virtual.jpg',
+            src: '/Icono_asistente_virtual-2.png',
             sizes: '512x512',
-            type: 'image/jpeg',
+            type: 'image/png',
             purpose: 'any maskable'
           }
         ]
