@@ -1,10 +1,23 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { LogOut, Bot, UserCog, Bell } from 'lucide-react'
+import { LogOut, Bot, UserCog, Bell, Search, Sun, Moon } from 'lucide-react'
 
-export default function Sidebar({ onSelectConversation, selectedId, onLogout, session }) {
+export default function Sidebar({ onSelectConversation, selectedConv, onLogout, session, theme, onToggleTheme }) {
   const [conversations, setConversations] = useState([])
   const [pushEnabled, setPushEnabled] = useState(false)
+  const [filterStatus, setFilterStatus] = useState('all') // 'all', 'human_intervention', 'bot_active'
+  const [searchQuery, setSearchQuery] = useState('')
+  
+  const selectedId = selectedConv?.id;
+
+  // Optimistic update for UI sync
+  useEffect(() => {
+    if (selectedConv) {
+      setConversations(prev => prev.map(c => 
+        c.id === selectedConv.id ? { ...c, status: selectedConv.status } : c
+      ));
+    }
+  }, [selectedConv]);
 
   useEffect(() => {
     fetchConversations()
@@ -72,36 +85,74 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout, se
     }
   }
 
+  const handleToggleFilter = (status) => {
+    if (filterStatus === status) {
+      setFilterStatus('all');
+    } else {
+      setFilterStatus(status);
+    }
+  };
+
   const humanCount = conversations.filter(c => c.status === 'human_intervention').length;
   const botCount = conversations.filter(c => c.status === 'bot_active').length;
+
+  const filteredConversations = conversations.filter(c => {
+    const matchesStatus = filterStatus === 'all' || c.status === filterStatus;
+    const searchLower = searchQuery.toLowerCase();
+    const name = c.user_name ? c.user_name.toLowerCase() : '';
+    const phone = c.phone_number ? c.phone_number : '';
+    const matchesSearch = name.includes(searchLower) || phone.includes(searchLower);
+    
+    return matchesStatus && matchesSearch;
+  });
 
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <img src="/Logo-Blanco.png" alt="Auténticos" style={{ height: '32px' }} />
-        <div>
-          <button className="logout-btn" onClick={enablePush} title="Activar Notificaciones" style={{marginRight: '8px', color: pushEnabled ? 'var(--success)' : 'var(--text-secondary)'}}>
+        <img src={theme === 'light' ? "/logo-azul.png" : "/Logo-Blanco.png"} alt="Auténticos" style={{ height: '32px' }} />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button className="action-btn" onClick={onToggleTheme} title="Cambiar Tema">
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+          <button className={`action-btn ${pushEnabled ? 'success' : ''}`} onClick={enablePush} title="Activar Notificaciones">
             <Bell size={20} />
           </button>
-          <button className="logout-btn" onClick={onLogout} title="Cerrar Sesión">
+          <button className="action-btn logout" onClick={onLogout} title="Cerrar Sesión">
             <LogOut size={20} />
           </button>
         </div>
       </div>
 
       <div className="sidebar-stats">
-        <div className="stat-card stat-human">
+        <div 
+          className={`stat-card stat-human ${filterStatus === 'human_intervention' || filterStatus === 'all' ? 'active-filter' : ''}`}
+          onClick={() => handleToggleFilter('human_intervention')}
+        >
           <div className="stat-label"><div className="dot dot-human"></div>HUMANO</div>
           <div className="stat-value">{humanCount}<span> urgentes</span></div>
         </div>
-        <div className="stat-card stat-bot">
+        <div 
+          className={`stat-card stat-bot ${filterStatus === 'bot_active' || filterStatus === 'all' ? 'active-filter' : ''}`}
+          onClick={() => handleToggleFilter('bot_active')}
+        >
           <div className="stat-label"><div className="dot dot-bot"></div>ACTIVOS</div>
           <div className="stat-value">{botCount}<span> bots</span></div>
         </div>
       </div>
       
+      <div className="sidebar-search">
+        <Search className="search-icon" size={16} />
+        <input 
+          type="text" 
+          className="search-input" 
+          placeholder="Buscar chat o teléfono..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <div className="conv-list">
-        {conversations.map(conv => {
+        {filteredConversations.map(conv => {
           const isHuman = conv.status === 'human_intervention';
           
           return (
@@ -145,9 +196,9 @@ export default function Sidebar({ onSelectConversation, selectedId, onLogout, se
             </div>
           )
         })}
-        {conversations.length === 0 && (
+        {filteredConversations.length === 0 && (
           <div style={{padding: '24px', textAlign: 'center', color: 'var(--text-secondary)'}}>
-            No hay conversaciones aún.
+            No hay conversaciones para mostrar.
           </div>
         )}
       </div>

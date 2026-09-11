@@ -9,6 +9,12 @@ function App() {
   const [session, setSession] = useState(null)
   const [selectedConv, setSelectedConv] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark')
+
+  useEffect(() => {
+    document.documentElement.className = theme === 'light' ? 'theme-light' : ''
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -40,9 +46,11 @@ function App() {
     <div className={`app-container ${selectedConv ? 'chat-active' : ''}`}>
       <Sidebar 
         onSelectConversation={setSelectedConv} 
-        selectedId={selectedConv?.id} 
+        selectedConv={selectedConv} 
         onLogout={handleLogout}
         session={session}
+        theme={theme}
+        onToggleTheme={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')}
       />
       <ChatWindow 
         conversation={selectedConv} 

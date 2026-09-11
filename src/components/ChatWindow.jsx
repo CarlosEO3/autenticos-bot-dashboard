@@ -137,7 +137,6 @@ export default function ChatWindow({ conversation, onResolve, onBack }) {
       <div className="chat-header">
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={20} />
-          <span>Volver</span>
         </button>
         <div>
           <h3 style={{margin: 0}}>{conversation.user_name || 'Usuario'}</h3>
@@ -180,7 +179,7 @@ export default function ChatWindow({ conversation, onResolve, onBack }) {
           />
         </div>
         <button type="submit" className="send-btn" disabled={!inputValue.trim() || sending}>
-          <Send size={20} color="#001d2d" />
+          <Send size={20} />
         </button>
       </form>
     </div>

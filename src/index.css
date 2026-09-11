@@ -1,21 +1,65 @@
 :root {
-  /* RelayBot Dark Aesthetic with Auténticos Base Color & Accents */
+  /* Default Dark Theme */
   --bg-color: #00101a;
   --panel-bg: rgba(255, 255, 255, 0.03);
+  --panel-bg-hover: rgba(255, 255, 255, 0.05);
+  --panel-bg-active: rgba(255, 255, 255, 0.08);
   --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-border-hover: rgba(255, 255, 255, 0.2);
+  --panel-border-active: rgba(255, 255, 255, 0.15);
+  
   --card-bg: rgba(255, 255, 255, 0.02);
+  --sidebar-bg: rgba(0, 0, 0, 0.3);
+  --chat-window-bg: rgba(0, 0, 0, 0.1);
+  --chat-header-bg: rgba(0, 0, 0, 0.3);
+  --chat-input-bg: rgba(0, 0, 0, 0.3);
+  --message-left-bg: rgba(255, 255, 255, 0.05);
+  --message-bot-bg: rgba(255, 255, 255, 0.1);
   
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.6);
-  
-  /* Accents */
-  --accent: #ddbe3d; /* Auténticos Gold */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+
+  --accent: #ddbe3d;
   --accent-hover: #c9ab35;
   --accent-dim: rgba(221, 190, 61, 0.15);
   
   --danger: #ef4444;
-  --success: #10b981; /* Green for bot active */
+  --success: #10b981;
   --success-dim: rgba(16, 185, 129, 0.15);
+}
+
+.theme-light {
+  /* Light Theme Overrides */
+  --bg-color: #f0f4f8;
+  --panel-bg: rgba(0, 0, 0, 0.03);
+  --panel-bg-hover: rgba(0, 0, 0, 0.05);
+  --panel-bg-active: rgba(0, 0, 0, 0.08);
+  --panel-border: rgba(0, 0, 0, 0.08);
+  --panel-border-hover: rgba(0, 0, 0, 0.2);
+  --panel-border-active: rgba(0, 0, 0, 0.15);
+  
+  --card-bg: rgba(0, 0, 0, 0.02);
+  --sidebar-bg: rgba(255, 255, 255, 0.5);
+  --chat-window-bg: rgba(255, 255, 255, 0.3);
+  --chat-header-bg: rgba(255, 255, 255, 0.7);
+  --chat-input-bg: rgba(255, 255, 255, 0.7);
+  --message-left-bg: rgba(0, 0, 0, 0.05);
+  --message-bot-bg: rgba(0, 0, 0, 0.1);
+  
+  --text-primary: #0f172a;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+
+  --accent: #b49a2a; 
+  --accent-hover: #9c8422;
+  --accent-dim: rgba(180, 154, 42, 0.15);
+  
+  --danger: #dc2626;
+  --success: #059669; 
+  --success-dim: rgba(5, 150, 105, 0.15);
 }
 
 body {
@@ -32,5 +76,5 @@ input, button { font-family: inherit; }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
