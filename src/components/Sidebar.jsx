@@ -67,7 +67,7 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
         const swRegistration = await navigator.serviceWorker.register('/sw.js');
         const subscription = await swRegistration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlB64ToUint8Array('BJON_9rcvSwmfnYVAUH21pTQQvN1fa4Ygzm_EKcejAA69CuyVGxzSCmd-WhkNpJ86JQdzohRXiQnnedqolKmys4')
+          applicationServerKey: urlB64ToUint8Array('BCUss9mxxITm3aUobQgge66_muldGESfGzHMUNg_RMDvxT-URj4oAnliqRsZzYoraL3WHih1TbVprZNtJPn8j64')
         });
         
         await supabase.from('push_subscriptions').insert({
