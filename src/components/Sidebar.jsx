@@ -21,6 +21,7 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
 
   useEffect(() => {
     fetchConversations()
+    checkPushSubscription()
 
     const channel = supabase
       .channel('conversations_changes')
@@ -33,6 +34,20 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
       supabase.removeChannel(channel)
     }
   }, [])
+
+  const checkPushSubscription = async () => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        const subscription = await registration.pushManager.getSubscription();
+        if (subscription) {
+          setPushEnabled(true);
+        }
+      } catch (e) {
+        console.error('Error checking push subscription', e);
+      }
+    }
+  }
 
   const fetchConversations = async () => {
     const { data, error } = await supabase
@@ -70,15 +85,27 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
           applicationServerKey: urlB64ToUint8Array('BCUss9mxxITm3aUobQgge66_muldGESfGzHMUNg_RMDvxT-URj4oAnliqRsZzYoraL3WHih1TbVprZNtJPn8j64')
         });
         
-        await supabase.from('push_subscriptions').insert({
-          user_id: session?.user?.id,
-          subscription: subscription
-        });
+        // Verificar si la suscripción ya existe en la BD para evitar duplicados
+        const { data: existingSubs } = await supabase
+          .from('push_subscriptions')
+          .select('*')
+          .eq('user_id', session?.user?.id);
+        
+        // Comparamos el endpoint (único por dispositivo/navegador)
+        const isDuplicate = existingSubs?.some(sub => sub.subscription.endpoint === subscription.endpoint);
+
+        if (!isDuplicate) {
+          await supabase.from('push_subscriptions').insert({
+            user_id: session?.user?.id,
+            subscription: subscription
+          });
+        }
+        
         setPushEnabled(true);
         alert('¡Notificaciones activadas exitosamente!');
       } catch (e) {
         console.error('Error enabling push', e);
-        alert('No se pudieron activar las notificaciones. Asegúrate de dar permisos en tu navegador.');
+        alert('No se pudieron activar las notificaciones. Asegúrate de dar permisos en tu navegador (o añade la app a la pantalla de inicio en iOS).');
       }
     } else {
       alert('Tu navegador/dispositivo no soporta notificaciones push en este momento.');
