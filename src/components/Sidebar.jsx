@@ -38,10 +38,18 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
   const checkPushSubscription = async () => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       try {
-        const registration = await navigator.serviceWorker.register('/sw.js');
-        const subscription = await registration.pushManager.getSubscription();
+        let registration = await navigator.serviceWorker.getRegistration();
+        if (!registration) {
+          registration = await navigator.serviceWorker.register('/sw.js');
+        }
+        // Esperamos a que el service worker esté completamente activo
+        const readyRegistration = await navigator.serviceWorker.ready;
+        const subscription = await readyRegistration.pushManager.getSubscription();
+        
         if (subscription) {
           setPushEnabled(true);
+        } else {
+          setPushEnabled(false);
         }
       } catch (e) {
         console.error('Error checking push subscription', e);
@@ -79,7 +87,12 @@ export default function Sidebar({ onSelectConversation, selectedConv, onLogout, 
   const enablePush = async () => {
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       try {
-        const swRegistration = await navigator.serviceWorker.register('/sw.js');
+        let swRegistration = await navigator.serviceWorker.getRegistration();
+        if (!swRegistration) {
+          swRegistration = await navigator.serviceWorker.register('/sw.js');
+        }
+        swRegistration = await navigator.serviceWorker.ready;
+        
         const subscription = await swRegistration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlB64ToUint8Array('BCUss9mxxITm3aUobQgge66_muldGESfGzHMUNg_RMDvxT-URj4oAnliqRsZzYoraL3WHih1TbVprZNtJPn8j64')
