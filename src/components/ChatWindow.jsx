@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { CheckCircle, Send, Bot, User, UserCog, ArrowLeft } from 'lucide-react'
+import { CheckCircle, Send, Bot, User, UserCog, ArrowLeft, Bell } from 'lucide-react'
 
-export default function ChatWindow({ conversation, onResolve, onBack }) {
+export default function ChatWindow({ conversation, onResolve, onBack, pushEnabled, onEnablePush }) {
   const [messages, setMessages] = useState([])
   const [inputValue, setInputValue] = useState('')
   const [sending, setSending] = useState(false)
@@ -135,13 +135,20 @@ export default function ChatWindow({ conversation, onResolve, onBack }) {
 
       {/* Cabecera del Chat */}
       <div className="chat-header">
-        <button className="back-btn" onClick={onBack}>
-          <ArrowLeft size={20} />
-        </button>
-        <div>
-          <h3 style={{margin: 0}}>{conversation.user_name || 'Usuario'}</h3>
-          <span style={{color: 'var(--text-secondary)', fontSize: '13px'}}>{conversation.phone_number}</span>
+        <div style={{display: 'flex', alignItems: 'center', gap: '16px'}}>
+          <button className="back-btn" onClick={onBack}>
+            <ArrowLeft size={20} />
+          </button>
+          <div>
+            <h3 style={{margin: 0}}>{conversation.user_name || 'Usuario'}</h3>
+            <span style={{color: 'var(--text-secondary)', fontSize: '13px'}}>{conversation.phone_number}</span>
+          </div>
         </div>
+        
+        {/* Bell notification button so it's visible on mobile when sidebar is hidden */}
+        <button className={`action-btn ${pushEnabled ? 'success' : ''}`} onClick={onEnablePush} title="Activar Notificaciones" style={{marginLeft: 'auto'}}>
+          <Bell size={20} />
+        </button>
       </div>
 
       {/* Lista de Mensajes */}
